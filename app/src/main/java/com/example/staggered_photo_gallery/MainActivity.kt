@@ -59,6 +59,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun GalleryScreen() {
+    //add pictures
     val photos = listOf(
         painterResource(R.drawable.gallery_photo),
         painterResource(R.drawable.gallery_photo_1),
@@ -69,9 +70,11 @@ fun GalleryScreen() {
         painterResource(R.drawable.gallery_photo_5)
     )
 
+    //initialize var for keeping track of which photo is clicked
     var photoClicked by remember { mutableStateOf<Painter?>(null) }
 
     Box(modifier = Modifier.fillMaxSize()){
+        //staggered grid holds photos and makes photos clickable w var
         LazyVerticalStaggeredGrid(
             columns = StaggeredGridCells.Fixed(2),
             modifier = Modifier.fillMaxSize(),
@@ -90,6 +93,7 @@ fun GalleryScreen() {
         )
     }
 
+    // if photo is clicked, enlarge it and set it back to null state
     if (photoClicked != null){
         EnlargePhoto(photoClicked!!){
             photoClicked = null
@@ -97,8 +101,10 @@ fun GalleryScreen() {
     }
 }
 
+//function for enlarging clicked photo
 @Composable
 fun EnlargePhoto(photo:Painter, onClose:() -> Unit) {
+    // var for keeping track and enlarged photos are all the same scale
     var enlarged by remember { mutableStateOf(true) }
     val scale by animateFloatAsState(
         targetValue = if (enlarged) 2f else 0.0f,
